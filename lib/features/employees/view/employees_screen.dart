@@ -5,12 +5,37 @@ import 'package:employees_app/resources/app_colors.dart';
 import 'package:employees_app/resources/app_images.dart';
 import 'package:employees_app/resources/app_sizes.dart';
 import 'package:employees_app/resources/app_strings.dart';
+import 'package:employees_app/resources/app_utils.dart';
 import 'package:employees_app/resources/app_widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 
 class EmployeesScreen extends StatelessWidget {
   const EmployeesScreen({super.key});
+
+  void listenStateChanges(BuildContext context, EmployeesState state) {
+    switch (state.removeEmployeeFormzStatus) {
+      case FormzSubmissionStatus.success:
+        AppUtils.showMySnackBar(
+          context: context,
+          message: AppStrings.employeeRemovedSuccessfully,
+        );
+        break;
+      case FormzSubmissionStatus.failure:
+        showErrorMessage(context);
+        break;
+      default:
+        break;
+    }
+  }
+
+  void showErrorMessage(BuildContext context) {
+    AppUtils.showMySnackBar(
+      context: context,
+      message: AppStrings.somethingWentWrong,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +45,10 @@ class EmployeesScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          BlocBuilder<EmployeesBloc, EmployeesState>(
+          BlocConsumer<EmployeesBloc, EmployeesState>(
+            listener: (_, state) {
+              listenStateChanges(context, state);
+            },
             builder: (context, state) {
               if (state.employees.isEmpty) {
                 return Center(

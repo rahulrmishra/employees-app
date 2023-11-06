@@ -11,7 +11,7 @@ class AppUtils {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: behavior,
-        backgroundColor: AppColors.black,
+        backgroundColor: AppColors.lightBlack,
         content: Text(message, style: const TextStyle(color: AppColors.white)),
         duration: Duration(seconds: sec),
       ),

@@ -31,8 +31,6 @@ class EmployeeDetailsScreen extends StatefulWidget {
 }
 
 class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
-  final _formKey = GlobalKey<FormState>();
-
   @override
   void initState() {
     super.initState();
@@ -185,46 +183,42 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
               ),
               body: Padding(
                 padding: const EdgeInsets.all(AppSizes.screenPadding),
-                child: Form(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      BlocBuilder<EmployeeDetailsBloc, EmployeeDetailsState>(
-                        builder: (context, state) {
-                          return CustomTextField(
-                            initialValue: widget.employee?.name ?? '',
-                            hintText: AppStrings.employeeName,
-                            validator: (p0) {
-                              if (p0 == null || p0.trim().isEmpty) {
-                                return AppStrings.thisFieldIsRequired;
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              context
-                                  .read<EmployeeDetailsBloc>()
-                                  .add(ChangeEmployeeName(name: value));
-                            },
-                            prefixIcon: AppAssetIcon(
-                              name: AppImages.personIcon,
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 23),
-                      BlocBuilder<EmployeeDetailsBloc, EmployeeDetailsState>(
-                        buildWhen: (previous, current) =>
-                            previous.employee.role != current.employee.role,
-                        builder: (context, state) {
-                          return SelectRoleDropDown(
-                            onTap: () => showBottomSheet(context),
-                            value: state.employee.role,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                child: Column(
+                  children: [
+                    BlocBuilder<EmployeeDetailsBloc, EmployeeDetailsState>(
+                      builder: (context, state) {
+                        return CustomTextField(
+                          initialValue: widget.employee?.name ?? '',
+                          hintText: AppStrings.employeeName,
+                          validator: (p0) {
+                            if (p0 == null || p0.trim().isEmpty) {
+                              return AppStrings.thisFieldIsRequired;
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            context
+                                .read<EmployeeDetailsBloc>()
+                                .add(ChangeEmployeeName(name: value));
+                          },
+                          prefixIcon: AppAssetIcon(
+                            name: AppImages.personIcon,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 23),
+                    BlocBuilder<EmployeeDetailsBloc, EmployeeDetailsState>(
+                      buildWhen: (previous, current) =>
+                          previous.employee.role != current.employee.role,
+                      builder: (context, state) {
+                        return SelectRoleDropDown(
+                          onTap: () => showBottomSheet(context),
+                          value: state.employee.role,
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
               bottomNavigationBar: AddEmployeesBottomNavBar(

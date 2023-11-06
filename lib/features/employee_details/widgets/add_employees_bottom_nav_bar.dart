@@ -1,4 +1,6 @@
 import 'package:employees_app/features/employee_details/bloc/employee_details_bloc.dart';
+import 'package:employees_app/features/employee_details/model/add_edit_employees_model.dart';
+import 'package:employees_app/resources/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:employees_app/resources/app_colors.dart';
 import 'package:employees_app/resources/app_strings.dart';
@@ -12,6 +14,16 @@ class AddEmployeesBottomNavBar extends StatelessWidget {
     required this.addNewEmployee,
   });
   final bool addNewEmployee;
+
+  bool validate(BuildContext context) {
+    Employee emp = context.read<EmployeeDetailsBloc>().state.employee;
+    if (emp.name == null || emp.name!.trim().isEmpty || emp.role == null) {
+      AppUtils.showMySnackBar(
+          context: context, message: AppStrings.pleaseFillDetails);
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +52,10 @@ class AddEmployeesBottomNavBar extends StatelessWidget {
             const SizedBox(width: 16),
             CustomAppButton(
               onTap: () {
+                if (!validate(context)) {
+                  return;
+                }
+
                 if (addNewEmployee) {
                   context
                       .read<EmployeeDetailsBloc>()

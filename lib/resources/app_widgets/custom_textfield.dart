@@ -25,13 +25,13 @@ class CustomTextField extends StatelessWidget {
     return SizedBox(
       height: AppSizes.textInputFieldsHeight,
       child: TextFormField(
-        validator: validator,
         initialValue: initialValue,
         controller: controller,
         cursorColor: AppColors.borderColor,
         onChanged: onChanged,
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.only(top: 0),
+          isDense: true,
+          contentPadding: EdgeInsets.zero,
           border: OutlineInputBorder(
             borderSide: const BorderSide(
               color: AppColors.borderColor,
@@ -60,6 +60,15 @@ class CustomTextField extends StatelessWidget {
             ),
           ),
           errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: AppColors.red,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(
+              AppSizes.textInputFieldsBorderRadius,
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
             borderSide: const BorderSide(
               color: AppColors.red,
               width: 1,
